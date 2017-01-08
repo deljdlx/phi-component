@@ -1,0 +1,48 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "3767f13258f5157fa9900723eb1df112",
+    "content-hash": "326fa33dbdaad28a9e81f86c346d2fbd",
+    "packages": [
+        {
+            "name": "elbiniou-phi",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ElBiniou/phi.git",
+                "reference": "827497494ceb5543731b2f8ae7588944b8569897"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ElBiniou/phi/zipball/827497494ceb5543731b2f8ae7588944b8569897",
+                "reference": "827497494ceb5543731b2f8ae7588944b8569897",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Phi\\": "source/class"
+                }
+            },
+            "description": "A framework for people who don't like frameworks",
+            "support": {
+                "source": "https://github.com/ElBiniou/phi/tree/master",
+                "issues": "https://github.com/ElBiniou/phi/issues"
+            },
+            "time": "2017-01-08 13:20:32"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "elbiniou-phi": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

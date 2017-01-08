@@ -1,0 +1,27 @@
+{
+	"name": "elbiniou-phpcomponent",
+	"description": "A framework for people who don't like frameworks",
+	"repositories": [
+		{"type": "vcs", "url": "https://github.com/ElBiniou/phi"}
+	],
+	"require":
+	{
+		"elbiniou-phi": "dev-master"
+	},
+	"require-dev": {
+	},
+	"config": {
+		"process-timeout": 600
+	},
+	"autoload": {
+		"psr-0": { "Mustache": "vendor/mustache/src" },
+		"psr-4": {
+			"PHPComponent\\": "source/class"
+		},
+		"files": [
+
+		]
+	}
+}
+
+
