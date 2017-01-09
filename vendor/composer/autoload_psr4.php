@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Phi\\Traits\\' => array($vendorDir . '/phi-traits/source/class/Traits'),
+    'Phi\\Interfaces\\' => array($vendorDir . '/elbiniou-phi/source/Interfaces'),
     'Phi\\' => array($vendorDir . '/elbiniou-phi/source/class'),
     'PHPComponent\\' => array($baseDir . '/source/class'),
 );

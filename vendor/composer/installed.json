@@ -36,23 +36,24 @@
         "source": {
             "type": "git",
             "url": "https://github.com/ElBiniou/phi.git",
-            "reference": "2d5b7bdf0d8510c7bb56131df8130b5e16ecda02"
+            "reference": "227cae4ef14a971633d9e47bce2b5bdffd73b1db"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/ElBiniou/phi/zipball/2d5b7bdf0d8510c7bb56131df8130b5e16ecda02",
-            "reference": "2d5b7bdf0d8510c7bb56131df8130b5e16ecda02",
+            "url": "https://api.github.com/repos/ElBiniou/phi/zipball/227cae4ef14a971633d9e47bce2b5bdffd73b1db",
+            "reference": "227cae4ef14a971633d9e47bce2b5bdffd73b1db",
             "shasum": ""
         },
         "require": {
             "phi-traits": "dev-master"
         },
-        "time": "2017-01-09 21:41:06",
+        "time": "2017-01-09 21:53:23",
         "type": "library",
         "installation-source": "source",
         "autoload": {
             "psr-4": {
-                "Phi\\": "source/class"
+                "Phi\\": "source/class",
+                "Phi\\Interfaces\\": "source/Interfaces"
             }
         },
         "description": "A framework for people who don't like frameworks",
