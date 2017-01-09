@@ -36,18 +36,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/ElBiniou/phi.git",
-            "reference": "227cae4ef14a971633d9e47bce2b5bdffd73b1db"
+            "reference": "8b74bd5745c7c08fb7a85f41a539a913772b7fae"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/ElBiniou/phi/zipball/227cae4ef14a971633d9e47bce2b5bdffd73b1db",
-            "reference": "227cae4ef14a971633d9e47bce2b5bdffd73b1db",
+            "url": "https://api.github.com/repos/ElBiniou/phi/zipball/8b74bd5745c7c08fb7a85f41a539a913772b7fae",
+            "reference": "8b74bd5745c7c08fb7a85f41a539a913772b7fae",
             "shasum": ""
         },
         "require": {
             "phi-traits": "dev-master"
         },
-        "time": "2017-01-09 21:53:23",
+        "time": "2017-01-09 21:57:20",
         "type": "library",
         "installation-source": "source",
         "autoload": {
