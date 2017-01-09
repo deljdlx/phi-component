@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ElBiniou/phi.git",
-                "reference": "8b74bd5745c7c08fb7a85f41a539a913772b7fae"
+                "reference": "6a1e2d516ba036a505998f536747505200f0dcaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ElBiniou/phi/zipball/8b74bd5745c7c08fb7a85f41a539a913772b7fae",
-                "reference": "8b74bd5745c7c08fb7a85f41a539a913772b7fae",
+                "url": "https://api.github.com/repos/ElBiniou/phi/zipball/6a1e2d516ba036a505998f536747505200f0dcaf",
+                "reference": "6a1e2d516ba036a505998f536747505200f0dcaf",
                 "shasum": ""
             },
             "require": {
@@ -36,7 +36,7 @@
                 "source": "https://github.com/ElBiniou/phi/tree/master",
                 "issues": "https://github.com/ElBiniou/phi/issues"
             },
-            "time": "2017-01-09 21:57:20"
+            "time": "2017-01-09 22:02:49"
         },
         {
             "name": "phi-traits",
