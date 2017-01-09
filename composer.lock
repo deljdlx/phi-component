@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ElBiniou/phi.git",
-                "reference": "546705b1824dbcaf793139f94f1b43980b6fc705"
+                "reference": "be7b2c9b11aeba681f6601e2ad16079d889edb50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ElBiniou/phi/zipball/546705b1824dbcaf793139f94f1b43980b6fc705",
-                "reference": "546705b1824dbcaf793139f94f1b43980b6fc705",
+                "url": "https://api.github.com/repos/ElBiniou/phi/zipball/be7b2c9b11aeba681f6601e2ad16079d889edb50",
+                "reference": "be7b2c9b11aeba681f6601e2ad16079d889edb50",
                 "shasum": ""
             },
             "type": "library",
@@ -32,7 +32,7 @@
                 "source": "https://github.com/ElBiniou/phi/tree/master",
                 "issues": "https://github.com/ElBiniou/phi/issues"
             },
-            "time": "2017-01-09 20:58:39"
+            "time": "2017-01-09 21:28:58"
         }
     ],
     "packages-dev": [],
