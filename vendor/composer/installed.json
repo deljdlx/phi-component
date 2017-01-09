@@ -6,15 +6,15 @@
         "source": {
             "type": "git",
             "url": "https://github.com/ElBiniou/phi-traits.git",
-            "reference": "2f3dac6499b8b582b14576d9295aa6d88119729d"
+            "reference": "2f3f1bde6582c1949854e505a44670d8773b07cd"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/ElBiniou/phi-traits/zipball/2f3dac6499b8b582b14576d9295aa6d88119729d",
-            "reference": "2f3dac6499b8b582b14576d9295aa6d88119729d",
+            "url": "https://api.github.com/repos/ElBiniou/phi-traits/zipball/2f3f1bde6582c1949854e505a44670d8773b07cd",
+            "reference": "2f3f1bde6582c1949854e505a44670d8773b07cd",
             "shasum": ""
         },
-        "time": "2017-01-09 21:39:10",
+        "time": "2017-01-09 21:40:53",
         "type": "library",
         "installation-source": "source",
         "autoload": {
@@ -36,18 +36,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/ElBiniou/phi.git",
-            "reference": "c1479ba3ab44b23b2fe17bb8f620c573ec8609f0"
+            "reference": "2d5b7bdf0d8510c7bb56131df8130b5e16ecda02"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/ElBiniou/phi/zipball/c1479ba3ab44b23b2fe17bb8f620c573ec8609f0",
-            "reference": "c1479ba3ab44b23b2fe17bb8f620c573ec8609f0",
+            "url": "https://api.github.com/repos/ElBiniou/phi/zipball/2d5b7bdf0d8510c7bb56131df8130b5e16ecda02",
+            "reference": "2d5b7bdf0d8510c7bb56131df8130b5e16ecda02",
             "shasum": ""
         },
         "require": {
             "phi-traits": "dev-master"
         },
-        "time": "2017-01-09 21:39:22",
+        "time": "2017-01-09 21:41:06",
         "type": "library",
         "installation-source": "source",
         "autoload": {
