@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3767f13258f5157fa9900723eb1df112",
-    "content-hash": "326fa33dbdaad28a9e81f86c346d2fbd",
+    "hash": "7fd6bc925b6c3560441843cef65d6799",
+    "content-hash": "7106ef106848eeb724ee44e32d9b1378",
     "packages": [
         {
             "name": "elbiniou-phi",
@@ -13,13 +13,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ElBiniou/phi.git",
-                "reference": "be7b2c9b11aeba681f6601e2ad16079d889edb50"
+                "reference": "08385000da2811805705bdccd47827dae80b19bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ElBiniou/phi/zipball/be7b2c9b11aeba681f6601e2ad16079d889edb50",
-                "reference": "be7b2c9b11aeba681f6601e2ad16079d889edb50",
+                "url": "https://api.github.com/repos/ElBiniou/phi/zipball/08385000da2811805705bdccd47827dae80b19bd",
+                "reference": "08385000da2811805705bdccd47827dae80b19bd",
                 "shasum": ""
+            },
+            "require": {
+                "phi-traits": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -32,13 +35,42 @@
                 "source": "https://github.com/ElBiniou/phi/tree/master",
                 "issues": "https://github.com/ElBiniou/phi/issues"
             },
-            "time": "2017-01-09 21:28:58"
+            "time": "2017-01-09 21:29:47"
+        },
+        {
+            "name": "phi-traits",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ElBiniou/phi-traits.git",
+                "reference": "828c669e9852c620c5930166ca6e003a745a3864"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ElBiniou/phi-traits/zipball/828c669e9852c620c5930166ca6e003a745a3864",
+                "reference": "828c669e9852c620c5930166ca6e003a745a3864",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Phi\\Traits\\": "source/class/Traits"
+                },
+                "files": []
+            },
+            "description": "Usefull traits",
+            "support": {
+                "source": "https://github.com/ElBiniou/phi-traits/tree/master",
+                "issues": "https://github.com/ElBiniou/phi-traits/issues"
+            },
+            "time": "2017-01-09 21:28:34"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "phi-traits": 20,
         "elbiniou-phi": 20
     },
     "prefer-stable": false,

@@ -1,20 +1,53 @@
 [
     {
+        "name": "phi-traits",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ElBiniou/phi-traits.git",
+            "reference": "828c669e9852c620c5930166ca6e003a745a3864"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ElBiniou/phi-traits/zipball/828c669e9852c620c5930166ca6e003a745a3864",
+            "reference": "828c669e9852c620c5930166ca6e003a745a3864",
+            "shasum": ""
+        },
+        "time": "2017-01-09 21:28:34",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Phi\\Traits\\": "source/class/Traits"
+            },
+            "files": []
+        },
+        "description": "Usefull traits",
+        "support": {
+            "source": "https://github.com/ElBiniou/phi-traits/tree/master",
+            "issues": "https://github.com/ElBiniou/phi-traits/issues"
+        }
+    },
+    {
         "name": "elbiniou-phi",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/ElBiniou/phi.git",
-            "reference": "be7b2c9b11aeba681f6601e2ad16079d889edb50"
+            "reference": "08385000da2811805705bdccd47827dae80b19bd"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/ElBiniou/phi/zipball/be7b2c9b11aeba681f6601e2ad16079d889edb50",
-            "reference": "be7b2c9b11aeba681f6601e2ad16079d889edb50",
+            "url": "https://api.github.com/repos/ElBiniou/phi/zipball/08385000da2811805705bdccd47827dae80b19bd",
+            "reference": "08385000da2811805705bdccd47827dae80b19bd",
             "shasum": ""
         },
-        "time": "2017-01-09 21:28:58",
+        "require": {
+            "phi-traits": "dev-master"
+        },
+        "time": "2017-01-09 21:29:47",
         "type": "library",
         "installation-source": "source",
         "autoload": {
