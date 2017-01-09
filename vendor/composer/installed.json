@@ -6,15 +6,15 @@
         "source": {
             "type": "git",
             "url": "https://github.com/ElBiniou/phi.git",
-            "reference": "d4069c866ff12dbb01c2837f4033ec25dedc8c6f"
+            "reference": "546705b1824dbcaf793139f94f1b43980b6fc705"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/ElBiniou/phi/zipball/d4069c866ff12dbb01c2837f4033ec25dedc8c6f",
-            "reference": "d4069c866ff12dbb01c2837f4033ec25dedc8c6f",
+            "url": "https://api.github.com/repos/ElBiniou/phi/zipball/546705b1824dbcaf793139f94f1b43980b6fc705",
+            "reference": "546705b1824dbcaf793139f94f1b43980b6fc705",
             "shasum": ""
         },
-        "time": "2017-01-08 14:55:16",
+        "time": "2017-01-09 20:58:39",
         "type": "library",
         "installation-source": "source",
         "autoload": {
