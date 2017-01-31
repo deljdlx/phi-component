@@ -4,8 +4,8 @@ namespace PHPComponent;
 
 
 
-use Phi\Module\DOMTemplate\Traits\MustacheTemplate;
-use Phi\Traits\Collection;
+use PHPComponent\Traits\MustacheTemplate;
+use PHPComponent\Traits\Collection;
 
 class Component extends Template
 {

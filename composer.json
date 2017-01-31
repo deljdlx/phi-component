@@ -1,14 +1,11 @@
 {
 	"name": "elbiniou-phpcomponent",
-	"description": "A framework for people who don't like frameworks",
+	"description": "PHP web-components",
 	"repositories": [
-		{"type": "vcs", "url": "https://github.com/ElBiniou/phi"},
-		{"type": "vcs", "url": "https://github.com/ElBiniou/phi-traits"}
 	],
 	"require":
 	{
-		"phi-traits": "dev-master",
-		"elbiniou-phi": "dev-master"
+
 	},
 	"require-dev": {
 	},

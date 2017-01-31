@@ -3,9 +3,9 @@
 namespace PHPComponent;
 
 
-use Phi\DOMDocument;
+use PHPComponent\DOMDocument;
 use PHPComponent\Traits\MustacheTemplate;
-use Phi\Traits\Collection;
+use PHPComponent\Traits\Collection;
 
 class Template
 {
