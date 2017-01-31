@@ -37,7 +37,15 @@ class Template
 
 
     public function __construct($template=null) {
-        $this->libXMLFlag=\LIBXML_HTML_NOIMPLIED | \LIBXML_HTML_NODEFDTD | \LIBXML_NOXMLDECL;
+        $this->libXMLFlag=
+            \LIBXML_HTML_NOIMPLIED
+            | \LIBXML_HTML_NODEFDTD
+            | \LIBXML_NOXMLDECL
+            //| \LIBXML_NOERROR
+            //| \LIBXML_NOWARNING
+            //| \LIBXML_ERR_NONE
+        ;
+
         $this->template=$template;
     }
 
@@ -86,8 +94,10 @@ class Template
         //libxml_use_internal_errors(true);
 
         $this->dom=new DOMDocument('1.0', 'utf-8');
-
         $this->dom->loadXML($buffer, $this->libXMLFlag);
+        //libxml_clear_errors();
+
+
         $this->rootNode=$this->dom->firstChild;
 
         if($this->componentEnabled) {

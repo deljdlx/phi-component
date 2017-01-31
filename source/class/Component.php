@@ -36,6 +36,7 @@ class Component extends Template
         $xPath=new \DOMXPath($dom);
         $nodes=$xPath->query($query);
 
+
         foreach ($nodes as $attributeNode) {
             /**
              * @var \DOMElement $attributeNode
@@ -43,6 +44,29 @@ class Component extends Template
 
             $attributeName=(string) $attributeNode->getAttribute($this->attributeAttributeName);
             $this->setVariable($attributeName, $attributeNode->textContent);
+
+            /*
+            echo '<pre id="' . __FILE__ . '-' . __LINE__ . '" style="border: solid 1px rgb(255,0,0); background-color:rgb(255,255,255)">';
+            echo '<div style="background-color:rgba(100,100,100,1); color: rgba(255,255,255,1)">' . __FILE__ . '@' . __LINE__ . '</div>';
+            print_r($dom->saveHTML());
+            echo '</pre>';
+
+            echo '<pre id="' . __FILE__ . '-' . __LINE__ . '" style="border: solid 1px rgb(255,0,0); background-color:rgb(255,255,255)">';
+            echo '<div style="background-color:rgba(100,100,100,1); color: rgba(255,255,255,1)">' . __FILE__ . '@' . __LINE__ . '</div>';
+            print_r($attributeNode);
+            echo '</pre>';
+
+            echo '<pre id="' . __FILE__ . '-' . __LINE__ . '" style="border: solid 1px rgb(255,0,0); background-color:rgb(255,255,255)">';
+            echo '<div style="background-color:rgba(100,100,100,1); color: rgba(255,255,255,1)">' . __FILE__ . '@' . __LINE__ . '</div>';
+            print_r($dom->innerHTML($attributeNode));
+            echo '</pre>';
+            die('EXIT '.__FILE__.'@'.__LINE__);
+            $this->setVariable($attributeName, $dom->innerHTML($attributeNode));
+            */
+
+
+
+
         }
     }
 
