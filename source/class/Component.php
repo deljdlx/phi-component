@@ -10,8 +10,8 @@ class Component extends Template
 {
 
 
-    protected $attributeXPathQuery = '//meta[@data-attribute-name]';
-    protected $attributeAttributeName = 'data-attribute-name';
+    protected $attributeXPathQuery = '/property[@name]';
+    protected $attributeAttributeName = 'name';
 
 
     public function __construct($template = null)
@@ -31,7 +31,17 @@ class Component extends Template
     public function extractParametersFromDOM($dom)
     {
 
-        $query = $this->attributeXPathQuery;
+
+        if($dom->firstChild->attributes->length) {
+
+            foreach ($dom->firstChild->attributes as $attribute) {
+                $this->setVariable($attribute->name, $attribute->value);
+            }
+        }
+
+
+        $query = $dom->firstChild->getNodePath().$this->attributeXPathQuery;
+
 
         $xPath = new \DOMXPath($dom);
         $nodes = $xPath->query($query);
@@ -43,7 +53,11 @@ class Component extends Template
              */
 
             $attributeName = (string)$attributeNode->getAttribute($this->attributeAttributeName);
-            $this->setVariable($attributeName, $attributeNode->textContent);
+            //$this->setVariable($attributeName, $attributeNode->textContent);
+
+
+            $this->setVariable($attributeName, $dom->innerHTML($attributeNode));
+
         }
     }
 
@@ -84,9 +98,28 @@ class Component extends Template
         }
 
         return $this;
-
-
     }
+
+    public function render($template = null, $values = null)
+    {
+
+        if ($template) {
+            $this->template = $template;
+        }
+
+
+        if (count($values)) {
+            $this->setVariables($values);
+        }
+
+
+        $output = $this->compileMustache($this->template, $this->getVariables());
+
+
+        $this->output = $output;
+        return $this->output;
+    }
+
 
 
     public function __toString()

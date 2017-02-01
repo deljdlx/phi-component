@@ -40,9 +40,10 @@ class Template
             \LIBXML_HTML_NOIMPLIED
             | \LIBXML_HTML_NODEFDTD
             | \LIBXML_NOXMLDECL
-            //| \LIBXML_NOERROR
-            //| \LIBXML_NOWARNING
-            //| \LIBXML_ERR_NONE
+            | \LIBXML_NOENT
+            | \LIBXML_NOERROR
+            | \LIBXML_NOWARNING
+            | \LIBXML_ERR_NONE
         ;
 
         $this->template = $template;
@@ -58,14 +59,27 @@ class Template
     public function registerCustomTag($tagName, $callback)
     {
 
-        $customTag = new CustomTag($tagName, $callback);
+        $customTagCallback = new CustomTag($tagName, $callback);
+        $this->customTags[$tagName] = $customTagCallback;
 
-        $this->customTags[$tagName] = $customTag; //$callback;
-
-
-        return $customTag;
-        return $this;
+        return $customTagCallback;
     }
+
+
+    public function registerComponent($tagName, $componentName)
+    {
+
+        $template = $this;
+
+        $this->registerCustomTag($tagName, function ($content, $node) use ($componentName, $template) {
+            $component = new $componentName;
+            $component->loadFromDOMNode($node);
+            $buffer = $component->render();
+
+            return $template->parseDOM($buffer);
+        });
+    }
+
 
     public function enableComponents($value = true)
     {
@@ -88,17 +102,16 @@ class Template
     }
 
 
-    public function parseDOM($buffer)
+    public function parseDOM($buffer, $toHTML=false)
     {
 
-        //libxml_use_internal_errors(true);
+        libxml_use_internal_errors(true);
+        $dom = new DOMDocument('1.0', 'utf-8');
+        $dom->loadHTML($buffer, $this->libXMLFlag);
+        libxml_clear_errors();
 
-        $this->dom = new DOMDocument('1.0', 'utf-8');
-        $this->dom->loadXML($buffer, $this->libXMLFlag);
-        //libxml_clear_errors();
 
-
-        $this->rootNode = $this->dom->firstChild;
+        $this->rootNode = $dom->firstChild;
 
         if ($this->componentEnabled) {
             $this->initializeComponentParsing();
@@ -106,22 +119,28 @@ class Template
 
 
         foreach ($this->customTags as $tagName => $customTag) {
+
             $query = '//' . $tagName;
 
+            //$query = '//' . $tagName.'//*[not('.$tagName.')]';
+            //$query = '//*[not('.$tagName.')]'.'//' . $tagName;
+            //BBB//*[not(BBB)]
 
-            $xPath = new \DOMXPath($this->dom);
+
+            $xPath = new \DOMXPath($dom);
             $nodes = $xPath->query($query);
 
 
             foreach ($nodes as $node) {
-
-                $nodeContent = $this->dom->innerHTML($node);
+                $nodeContent = $dom->innerXML($node);
                 $content = call_user_func_array(array($customTag, 'render'), array($nodeContent, $node));
-                $this->dom->replaceNodeWithContent($node, $content);
+                $dom->replaceNodeWithContent($node, $content);
             }
         }
 
-        return $this->dom->saveHTML();
+        return $dom->saveHTML();
+
+
     }
 
 
@@ -162,9 +181,7 @@ class Template
             $this->setVariables($values);
         }
 
-
-        $compiledDom = $this->parseDOM($this->template);
-
+        $compiledDom = $this->parseDOM($this->template, true);
         $output = $this->compileMustache($compiledDom, $this->getVariables());
 
 

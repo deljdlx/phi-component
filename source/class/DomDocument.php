@@ -10,7 +10,23 @@ class DOMDocument extends \DOMDocument
 
 
     public function replaceNodeWithContent($containerNode, $content) {
-        $contentNode=$this->createCDATASection($content);
+        //$contentNode=$this->createCDATASection($content);
+
+        $dom=new \DOMDocument('1.0', 'utf-8');
+        $dom->loadHTML('<phpcomponent-importcontainer>'.$content.'</phpcomponent-importcontainer>');
+
+
+        $content=preg_replace(
+            '`.*?<phpcomponent-importcontainer>(.*?)</phpcomponent-importcontainer>.*`s',
+            '$1',
+            $dom->saveXML()
+        );
+
+
+        $contentNode=$this->createDocumentFragment();
+        $contentNode->appendXML($content);
+
+
         $this->replaceNodeWithNode($containerNode, $contentNode);
 
         return $contentNode;
@@ -60,8 +76,10 @@ class DOMDocument extends \DOMDocument
 
 
     protected function replaceNodeWithNode($containerNode, $node) {
+
         $newValueNode=$node->cloneNode(true);
         $importedValueNode=$this->importNode($newValueNode, true);
+
         $containerNode->parentNode->replaceChild($importedValueNode, $containerNode);
     }
 
@@ -74,6 +92,20 @@ class DOMDocument extends \DOMDocument
         }
     }
 
+
+
+    public function innerXML(\DOMNode $element) {
+        $innerHTML = "";
+        $children  = $element->childNodes;
+
+        foreach ($children as $child)
+        {
+            $innerHTML .= $element->ownerDocument->saveXML($child);
+        }
+
+        return $innerHTML;
+    }
+
     public function innerHTML(\DOMNode $element) {
         $innerHTML = "";
         $children  = $element->childNodes;
@@ -82,7 +114,6 @@ class DOMDocument extends \DOMDocument
         {
             $innerHTML .= $element->ownerDocument->saveHTML($child);
         }
-
         return $innerHTML;
     }
 
