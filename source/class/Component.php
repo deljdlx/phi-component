@@ -53,10 +53,14 @@ class Component extends Template
              */
 
             $attributeName = (string)$attributeNode->getAttribute($this->attributeAttributeName);
-            //$this->setVariable($attributeName, $attributeNode->textContent);
+            $value=$dom->innerHTML($attributeNode);
 
 
-            $this->setVariable($attributeName, $dom->innerHTML($attributeNode));
+            if($attributeNode->getAttribute('type')=='json') {
+                $value=json_decode($value, true);
+            }
+
+            $this->setVariable($attributeName, $value);
 
         }
     }
