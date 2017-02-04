@@ -76,6 +76,10 @@ class Template
             $component->loadFromDOMNode($node);
             $buffer = $component->render();
 
+
+
+            return $buffer;
+
             return $template->parseDOM($buffer);
         });
     }
@@ -107,7 +111,7 @@ class Template
 
         libxml_use_internal_errors(true);
         $dom = new DOMDocument('1.0', 'utf-8');
-        $dom->loadHTML($buffer, $this->libXMLFlag);
+        $dom->loadHTML(mb_convert_encoding($buffer, 'HTML-ENTITIES', 'UTF-8'), $this->libXMLFlag);
         libxml_clear_errors();
 
 
@@ -133,7 +137,9 @@ class Template
 
             foreach ($nodes as $node) {
                 $nodeContent = $dom->innerXML($node);
+
                 $content = call_user_func_array(array($customTag, 'render'), array($nodeContent, $node));
+
                 $dom->replaceNodeWithContent($node, $content);
             }
         }
