@@ -69,19 +69,19 @@ class Template
     public function registerComponent($tagName, $componentName)
     {
 
-        $template = $this;
 
-        $this->registerCustomTag($tagName, function ($content, $node) use ($componentName, $template) {
+        $this->registerCustomTag($tagName, function ($content, $node) use ($componentName) {
             $component = new $componentName;
             $component->loadFromDOMNode($node);
             $buffer = $component->render();
 
-
+            $this->components[]=$component;
 
             return $buffer;
 
-            return $template->parseDOM($buffer);
         });
+
+
     }
 
 
@@ -106,7 +106,7 @@ class Template
     }
 
 
-    public function parseDOM($buffer, $toHTML=false)
+    public function parseDOM($buffer)
     {
 
         libxml_use_internal_errors(true);

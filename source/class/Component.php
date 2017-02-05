@@ -14,10 +14,69 @@ class Component extends Template
     protected $attributeAttributeName = 'name';
 
 
+    protected static $instanceIndex=array();
+    protected $instanceID='';
+
+
+    protected static $globalCSS = array();
+    protected $css = array();
+
+
     public function __construct($template = null)
     {
         parent::__construct($template);
+
+        $className=basename(get_class($this));
+
+        if(!isset(static::$instanceIndex[$className])) {
+            static::$instanceIndex[$className]=-1;
+        }
+        static::$instanceIndex[$className]++;
+        $this->instanceID=$className.'-'.static::$instanceIndex[$className];
     }
+
+
+    public function getID() {
+        return $this->instanceID;
+    }
+
+
+    public function addCSS($cssDeclaration, $name = null)
+    {
+        if ($name === null) {
+            $this->css[] = $cssDeclaration;
+        } else {
+            $this->css[$name] = $cssDeclaration;
+        }
+        return $this;
+    }
+
+    public static function addGlobalCSS($cssDeclaration, $name = null)
+    {
+        if ($name === null) {
+            static::$globalCSS[] = $cssDeclaration;
+        } else {
+            static::$globalCSS[$name] = $cssDeclaration;
+        }
+        return static::$globalCSS;
+    }
+
+
+    public function getCSS($toString = true, $withGlobalCSS = false)
+    {
+        if ($toString) {
+            $css=implode('', $this->css);
+            if($withGlobalCSS) {
+                return implode('', static::$globalCSS).$css;
+            }
+
+
+        } else {
+            return $this->css;
+        }
+
+    }
+
 
     public function loadFromDOMNode(\DOMElement $node)
     {
@@ -32,7 +91,7 @@ class Component extends Template
     {
 
 
-        if($dom->firstChild->attributes->length) {
+        if ($dom->firstChild->attributes->length) {
 
             foreach ($dom->firstChild->attributes as $attribute) {
                 $this->setVariable($attribute->name, $attribute->value);
@@ -40,7 +99,7 @@ class Component extends Template
         }
 
 
-        $query = $dom->firstChild->getNodePath().$this->attributeXPathQuery;
+        $query = $dom->firstChild->getNodePath() . $this->attributeXPathQuery;
 
 
         $xPath = new \DOMXPath($dom);
@@ -53,11 +112,11 @@ class Component extends Template
              */
 
             $attributeName = (string)$attributeNode->getAttribute($this->attributeAttributeName);
-            $value=$dom->innerHTML($attributeNode);
+            $value = $dom->innerHTML($attributeNode);
 
 
-            if($attributeNode->getAttribute('type')=='json') {
-                $value=json_decode($value, true);
+            if ($attributeNode->getAttribute('type') == 'json') {
+                $value = json_decode($value, true);
             }
 
             $this->setVariable($attributeName, $value);
@@ -121,9 +180,11 @@ class Component extends Template
 
 
         $this->output = $output;
+
+        //$this->output = '<style>' . $this->getCSS() . '</style>' . $this->output;
+
         return $this->output;
     }
-
 
 
     public function __toString()
