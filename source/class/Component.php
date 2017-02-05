@@ -77,11 +77,16 @@ class Component extends Template
                 return implode('', static::$globalCSS) . $css;
             }
 
-
         } else {
             return $this->css;
         }
+    }
 
+
+
+    public static function getGlobalCSS()
+    {
+        return implode('', static::$globalCSS);
     }
 
 

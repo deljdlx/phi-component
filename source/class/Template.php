@@ -76,13 +76,18 @@ class Template
             $buffer = $component->render();
 
             $this->components[]=$component;
-
             return $buffer;
-
         });
-
-
     }
+
+
+    /**
+     * @return Component[]
+     */
+    public function getComponents() {
+        return $this->components;
+    }
+
 
 
     public function enableComponents($value = true)
