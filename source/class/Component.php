@@ -14,8 +14,8 @@ class Component extends Template
     protected $attributeAttributeName = 'name';
 
 
-    protected static $instanceIndex=array();
-    protected $instanceID='';
+    protected static $instanceIndex = array();
+    protected $instanceID = '';
 
 
     protected static $globalCSS = array();
@@ -25,19 +25,26 @@ class Component extends Template
     public function __construct($template = null)
     {
         parent::__construct($template);
+        $this->generateID();
 
-        $className=basename(get_class($this));
-
-        if(!isset(static::$instanceIndex[$className])) {
-            static::$instanceIndex[$className]=-1;
-        }
-        static::$instanceIndex[$className]++;
-        $this->instanceID=$className.'-'.static::$instanceIndex[$className];
     }
 
 
-    public function getID() {
+    public function getID()
+    {
         return $this->instanceID;
+    }
+
+
+    protected function generateID()
+    {
+        $className = basename(get_class($this));
+
+        if (!isset(static::$instanceIndex[$className])) {
+            static::$instanceIndex[$className] = -1;
+        }
+        static::$instanceIndex[$className]++;
+        $this->instanceID = $className . '-' . static::$instanceIndex[$className];
     }
 
 
@@ -65,9 +72,9 @@ class Component extends Template
     public function getCSS($toString = true, $withGlobalCSS = false)
     {
         if ($toString) {
-            $css=implode('', $this->css);
-            if($withGlobalCSS) {
-                return implode('', static::$globalCSS).$css;
+            $css = implode('', $this->css);
+            if ($withGlobalCSS) {
+                return implode('', static::$globalCSS) . $css;
             }
 
 
