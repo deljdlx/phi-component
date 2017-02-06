@@ -69,16 +69,25 @@ class Template
     public function registerComponent($tagName, $componentName)
     {
 
-        $template = $this;
 
-        $this->registerCustomTag($tagName, function ($content, $node) use ($componentName, $template) {
+        $this->registerCustomTag($tagName, function ($content, $node) use ($componentName) {
             $component = new $componentName;
             $component->loadFromDOMNode($node);
             $buffer = $component->render();
 
-            return $template->parseDOM($buffer);
+            $this->components[]=$component;
+            return $buffer;
         });
     }
+
+
+    /**
+     * @return Component[]
+     */
+    public function getComponents() {
+        return $this->components;
+    }
+
 
 
     public function enableComponents($value = true)
@@ -102,12 +111,12 @@ class Template
     }
 
 
-    public function parseDOM($buffer, $toHTML=false)
+    public function parseDOM($buffer)
     {
 
         libxml_use_internal_errors(true);
         $dom = new DOMDocument('1.0', 'utf-8');
-        $dom->loadHTML($buffer, $this->libXMLFlag);
+        $dom->loadHTML(mb_convert_encoding($buffer, 'HTML-ENTITIES', 'UTF-8'), $this->libXMLFlag);
         libxml_clear_errors();
 
 
@@ -133,7 +142,9 @@ class Template
 
             foreach ($nodes as $node) {
                 $nodeContent = $dom->innerXML($node);
+
                 $content = call_user_func_array(array($customTag, 'render'), array($nodeContent, $node));
+
                 $dom->replaceNodeWithContent($node, $content);
             }
         }

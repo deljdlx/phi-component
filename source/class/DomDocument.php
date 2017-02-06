@@ -12,8 +12,19 @@ class DOMDocument extends \DOMDocument
     public function replaceNodeWithContent($containerNode, $content) {
         //$contentNode=$this->createCDATASection($content);
 
+
+        $libXMLFlag =
+            \LIBXML_HTML_NOIMPLIED
+            | \LIBXML_HTML_NODEFDTD
+            | \LIBXML_NOXMLDECL
+            | \LIBXML_NOENT
+            | \LIBXML_NOERROR
+            | \LIBXML_NOWARNING
+            | \LIBXML_ERR_NONE
+        ;
+
         $dom=new \DOMDocument('1.0', 'utf-8');
-        $dom->loadHTML('<phpcomponent-importcontainer>'.$content.'</phpcomponent-importcontainer>');
+        $dom->loadHTML('<phpcomponent-importcontainer>'.mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8').'</phpcomponent-importcontainer>', $libXMLFlag);
 
 
         $content=preg_replace(

@@ -10,14 +10,140 @@ class Component extends Template
 {
 
 
+
     protected $attributeXPathQuery = '/property[@name]';
     protected $attributeAttributeName = 'name';
+
+
+    protected static $instanceIndex = array();
+    protected $instanceID = '';
+
+
+    protected static $globalCSS = array();
+    protected $css = array();
+
+    protected static $globalJavascripts = array();
+    protected $javascripts = array();
 
 
     public function __construct($template = null)
     {
         parent::__construct($template);
+        $this->generateID();
+        $this->setVariable('elementID', $this->getID());
     }
+
+    public function includeTemplate($file) {
+        if(!is_file($file)) {
+            throw new \LogicException('Template "'.$file.'" does not exist');
+        }
+        ob_start();
+        include($file);
+        return ob_get_clean();
+    }
+
+
+    public function getID()
+    {
+        return $this->instanceID;
+    }
+
+
+    protected function generateID()
+    {
+        $className = basename(get_class($this));
+
+        if (!isset(static::$instanceIndex[$className])) {
+            static::$instanceIndex[$className] = -1;
+        }
+        static::$instanceIndex[$className]++;
+        $this->instanceID = str_replace('\\', '-', $className) . '-' . static::$instanceIndex[$className];
+
+        $this->setVariable('elementID', $this->instanceID);
+    }
+
+
+
+
+    //=======================================================
+    public static function addGlobalJavascript($javascript, $sufix = null)
+    {
+        $name=get_called_class().'-'.$sufix;
+
+        static::$globalJavascripts[$name] = $javascript;
+
+        return static::$globalJavascripts;
+    }
+
+    public static function getGlobalJavascripts()
+    {
+        return static::$globalJavascripts;
+    }
+
+
+    public function addJavascript($javascript, $name = null)
+    {
+        if ($name === null) {
+            $name=get_called_class();
+        }
+        $this->javascripts[$this->getID()] = $javascript;
+
+        return $this->javascripts;
+    }
+
+    public function getJavascript()
+    {
+        return implode('', $this->javascripts);
+    }
+
+
+
+    //=======================================================
+
+
+    public function addCSS($cssDeclaration, $name = null)
+    {
+        if ($name === null) {
+            $name=get_called_class();
+        }
+
+
+        $this->css[$name] = $cssDeclaration;
+
+        return $this;
+    }
+
+    public static function addGlobalCSS($cssDeclaration, $name = null)
+    {
+        if ($name === null) {
+            static::$globalCSS[] = $cssDeclaration;
+        } else {
+            static::$globalCSS[$name] = $cssDeclaration;
+        }
+        return static::$globalCSS;
+    }
+
+
+    public function getCSS($toString = true, $withGlobalCSS = false)
+    {
+        if ($toString) {
+            $css = implode('', $this->css);
+            if ($withGlobalCSS) {
+                return implode('', static::$globalCSS) . $css;
+            }
+
+        } else {
+            return $this->css;
+        }
+    }
+
+
+
+    public static function getGlobalCSS()
+    {
+        return implode('', static::$globalCSS);
+    }
+
 
     public function loadFromDOMNode(\DOMElement $node)
     {
@@ -32,7 +158,7 @@ class Component extends Template
     {
 
 
-        if($dom->firstChild->attributes->length) {
+        if ($dom->firstChild->attributes->length) {
 
             foreach ($dom->firstChild->attributes as $attribute) {
                 $this->setVariable($attribute->name, $attribute->value);
@@ -40,7 +166,7 @@ class Component extends Template
         }
 
 
-        $query = $dom->firstChild->getNodePath().$this->attributeXPathQuery;
+        $query = $dom->firstChild->getNodePath() . $this->attributeXPathQuery;
 
 
         $xPath = new \DOMXPath($dom);
@@ -53,11 +179,11 @@ class Component extends Template
              */
 
             $attributeName = (string)$attributeNode->getAttribute($this->attributeAttributeName);
-            $value=$dom->innerHTML($attributeNode);
+            $value = $dom->innerHTML($attributeNode);
 
 
-            if($attributeNode->getAttribute('type')=='json') {
-                $value=json_decode($value, true);
+            if ($attributeNode->getAttribute('type') == 'json') {
+                $value = json_decode($value, true);
             }
 
             $this->setVariable($attributeName, $value);
@@ -121,9 +247,11 @@ class Component extends Template
 
 
         $this->output = $output;
+
+        //$this->output = '<style>' . $this->getCSS() . '</style>' . $this->output;
+
         return $this->output;
     }
-
 
 
     public function __toString()
