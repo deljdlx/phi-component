@@ -7,7 +7,7 @@ use PHPComponent\DOMDocument;
 use PHPComponent\Traits\MustacheTemplate;
 use PHPComponent\Traits\Collection;
 
-class Page extends Template
+class Page extends Component
 {
 
 
@@ -15,14 +15,22 @@ class Page extends Template
     protected $cssFiles = null;
 
 
-    public function render($template = null, $values = null)
+    public function render($template = null, $values = null, $renderer=null)
     {
-        $output = parent::render($template, $values);
+
+        $this->initializeRendering($template, $values, $renderer);
+
+        $compiledDom = $this->parseDOM($this->template, true);
+        $output = $this->compileMustache($compiledDom, $this->getVariables());
+
+
+        $output = parent::render($output, $values, $renderer);
         $this->output = $this->injectCSS($output);
         $this->output = $this->injectJavascript($this->output);
 
         $this->extractJavascriptFiles();
         $this->extractCSSFiles();
+
         return $this->output;
 
     }
@@ -63,16 +71,21 @@ class Page extends Template
         }
 
 
-        //$output = preg_replace('`</body>`iu', $globalJavascriptBuffer . '</body>', $buffer);
+        //
 
         $output = str_replace('</body>', $globalJavascriptBuffer . '</body>', $buffer);
+        $output = str_replace('</body>', $javascriptBuffer . '</body>', $output);
+        //$output = mb_ereg_replace('</body>', $globalJavascriptBuffer . '</body>', $buffer);
+        //$output = preg_replace('`</body>`iu', $globalJavascriptBuffer . '</body>', $buffer);
+
+
 
 
         //echo $globalJavascriptBuffer;
         //echo $output;
         //die('EXIT '.__FILE__.'@'.__LINE__);
 
-        $output = str_replace('</body>', $javascriptBuffer . '</body>', $output);
+
 
 
 

@@ -10,7 +10,6 @@ class Component extends Template
 {
 
 
-
     protected $attributeXPathQuery = '/property[@name]';
     protected $attributeAttributeName = 'name';
 
@@ -26,6 +25,9 @@ class Component extends Template
     protected $javascripts = array();
 
 
+    protected $sourceNode;
+
+
     public function __construct($template = null)
     {
         parent::__construct($template);
@@ -33,15 +35,9 @@ class Component extends Template
         $this->setVariable('elementID', $this->getID());
     }
 
-    public function includeTemplate($file) {
-        if(!is_file($file)) {
-            throw new \LogicException('Template "'.$file.'" does not exist');
-        }
-        ob_start();
-        include($file);
-        return ob_get_clean();
+    public function getElementID() {
+        return $this->getVariable('elementID');
     }
-
 
     public function getID()
     {
@@ -63,12 +59,10 @@ class Component extends Template
     }
 
 
-
-
     //=======================================================
     public static function addGlobalJavascript($javascript, $sufix = null)
     {
-        $name=get_called_class().'-'.$sufix;
+        $name = get_called_class() . '-' . $sufix;
 
         static::$globalJavascripts[$name] = $javascript;
 
@@ -81,11 +75,10 @@ class Component extends Template
     }
 
 
-    public function addJavascript($javascript, $name = null)
+    public function addJavascript($javascript, $sufix = null)
     {
-        if ($name === null) {
-            $name=get_called_class();
-        }
+        $name = $this->getID() . $sufix;
+
         $this->javascripts[$this->getID()] = $javascript;
 
         return $this->javascripts;
@@ -93,9 +86,8 @@ class Component extends Template
 
     public function getJavascript()
     {
-        return implode('', $this->javascripts);
+        return implode("\n", $this->javascripts);
     }
-
 
 
     //=======================================================
@@ -104,23 +96,20 @@ class Component extends Template
     public function addCSS($cssDeclaration, $name = null)
     {
         if ($name === null) {
-            $name=get_called_class();
+            $name = get_called_class();
         }
-
 
         $this->css[$name] = $cssDeclaration;
 
         return $this;
     }
 
-    public static function addGlobalCSS($cssDeclaration, $name = null)
+    public static function addGlobalCSS($cssDeclaration, $suffix = null)
     {
-        if ($name === null) {
-            static::$globalCSS[] = $cssDeclaration;
-        } else {
-            static::$globalCSS[$name] = $cssDeclaration;
-        }
-        return static::$globalCSS;
+        $name = get_called_class() . '-' . $suffix;
+        static::$globalCSS[$name] = $cssDeclaration;
+
+        return static::$globalCSS[$name];
     }
 
 
@@ -131,12 +120,10 @@ class Component extends Template
             if ($withGlobalCSS) {
                 return implode('', static::$globalCSS) . $css;
             }
-
         } else {
             return $this->css;
         }
     }
-
 
 
     public static function getGlobalCSS()
@@ -145,10 +132,10 @@ class Component extends Template
     }
 
 
+
     public function loadFromDOMNode(\DOMElement $node)
     {
-
-
+        $this->sourceNode=$node;
         $this->dom = $this->createDomDocumentFromNode($node);
         $this->extractParametersFromDOM($this->dom);
         return $this;
@@ -209,7 +196,6 @@ class Component extends Template
 
                     $currentValue = $attributesValues[$variables[0]];
 
-
                     array_shift($variables);
 
                     foreach ($variables as $subVariable) {
@@ -230,25 +216,19 @@ class Component extends Template
         return $this;
     }
 
-    public function render($template = null, $values = null)
+    /**
+     * @param null $template
+     * @param null $values
+     * @return string
+     */
+    public function render($template = null, $values = null, $renderer=null)
     {
 
-        if ($template) {
-            $this->template = $template;
-        }
-
-
-        if (count($values)) {
-            $this->setVariables($values);
-        }
-
-
+        $this->initializeRendering($template, $values, $renderer);
         $output = $this->compileMustache($this->template, $this->getVariables());
 
 
-        $this->output = $output;
-
-        //$this->output = '<style>' . $this->getCSS() . '</style>' . $this->output;
+        $this->output = $this->doAfterRendering($output);
 
         return $this->output;
     }

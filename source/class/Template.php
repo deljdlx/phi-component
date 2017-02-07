@@ -18,6 +18,9 @@ class Template
     protected $output;
     protected $template;
 
+    protected $renderer;
+    protected static $staticRenderer;
+
 
     protected $libXMLFlag;
     protected $dom;
@@ -43,8 +46,7 @@ class Template
             | \LIBXML_NOENT
             | \LIBXML_NOERROR
             | \LIBXML_NOWARNING
-            | \LIBXML_ERR_NONE
-        ;
+            | \LIBXML_ERR_NONE;
 
         $this->template = $template;
     }
@@ -69,13 +71,15 @@ class Template
     public function registerComponent($tagName, $componentName)
     {
 
-
         $this->registerCustomTag($tagName, function ($content, $node) use ($componentName) {
+            if (!class_exists($componentName)) {
+                throw new \LogicException('Class "' . $componentName . '" does not exist');
+            }
             $component = new $componentName;
             $component->loadFromDOMNode($node);
             $buffer = $component->render();
 
-            $this->components[]=$component;
+            $this->components[] = $component;
             return $buffer;
         });
     }
@@ -84,10 +88,10 @@ class Template
     /**
      * @return Component[]
      */
-    public function getComponents() {
+    public function getComponents()
+    {
         return $this->components;
     }
-
 
 
     public function enableComponents($value = true)
@@ -135,10 +139,8 @@ class Template
             //$query = '//*[not('.$tagName.')]'.'//' . $tagName;
             //BBB//*[not(BBB)]
 
-
             $xPath = new \DOMXPath($dom);
             $nodes = $xPath->query($query);
-
 
             foreach ($nodes as $node) {
                 $nodeContent = $dom->innerXML($node);
@@ -157,7 +159,6 @@ class Template
 
     public function initializeComponentParsing()
     {
-
 
         $template = $this;
 
@@ -180,34 +181,91 @@ class Template
     }
 
 
-    public function render($template = null, $values = null)
+    //=======================================================
+    public function setRenderer($renderer)
     {
+        $this->renderer = $renderer;
+        return $this;
+    }
+
+    public static function setStaticRenderer($renderer)
+    {
+        static::$staticRenderer = $renderer;
+        return static::$staticRenderer;
+    }
+
+    //=======================================================
+
+
+    /**
+     * @param null $template
+     * @param null $values
+     * @param null $renderer
+     * @return string
+     */
+    public function render($template = null, $values = null, $renderer = null)
+    {
+        $this->initializeRendering($template, $values, $renderer);
+
+        $compiledDom = $this->parseDOM($this->template, true);
+        $output = $this->compileMustache($compiledDom, $this->getVariables());
+        $this->output = $this->doAfterRendering($output);
+        return $this->output;
+    }
+
+    protected function initializeRendering($template = null, $values = null, $renderer = null)
+    {
+        if ($renderer) {
+            $this->renderer = $renderer;
+        }
 
         if ($template) {
             $this->template = $template;
         }
 
-
         if (count($values)) {
             $this->setVariables($values);
         }
-
-        $compiledDom = $this->parseDOM($this->template, true);
-        $output = $this->compileMustache($compiledDom, $this->getVariables());
-
-
-        $this->output = $output;
-        return $this->output;
     }
 
 
-    public function getOutput($template = null, $values = null)
+    protected function doAfterRendering($buffer) {
+
+        if(is_callable(static::$staticRenderer)) {
+            $buffer=call_user_func_array(static::$staticRenderer, array($buffer, $this));
+        }
+
+        if(is_callable($this->renderer)) {
+            $buffer=call_user_func_array($this->renderer, array($buffer, $this));
+        }
+        return $buffer;
+    }
+
+
+
+    /**
+     * @param null $template
+     * @param null $values
+     * @return string
+     */
+    public function getOutput($template = null, $values = null, $renderer = null)
     {
         if ($this->output === null) {
-            return $this->render($template, $values);
+            return $this->render($template, $values, $renderer);
         } else {
             return $this->output;
         }
+    }
+
+
+    public function includeTemplate($file)
+    {
+        if (!is_file($file)) {
+            throw new \LogicException('Template "' . $file . '" does not exist');
+        }
+        ob_start();
+        include($file);
+        return ob_get_clean();
     }
 
 }
