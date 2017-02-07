@@ -3,6 +3,7 @@
 namespace PHPComponent;
 
 
+use PHPComponent\Traits\HTMLComponent;
 use PHPComponent\Traits\MustacheTemplate;
 use PHPComponent\Traits\Collection;
 
@@ -13,16 +14,7 @@ class Component extends Template
     protected $attributeXPathQuery = '/property[@name]';
     protected $attributeAttributeName = 'name';
 
-
-    protected static $instanceIndex = array();
-    protected $instanceID = '';
-
-
-    protected static $globalCSS = array();
-    protected $css = array();
-
-    protected static $globalJavascripts = array();
-    protected $javascripts = array();
+    use HTMLComponent;
 
 
     protected $sourceNode;
@@ -58,78 +50,6 @@ class Component extends Template
         $this->setVariable('elementID', $this->instanceID);
     }
 
-
-    //=======================================================
-    public static function addGlobalJavascript($javascript, $sufix = null)
-    {
-        $name = get_called_class() . '-' . $sufix;
-
-        static::$globalJavascripts[$name] = $javascript;
-
-        return static::$globalJavascripts;
-    }
-
-    public static function getGlobalJavascripts()
-    {
-        return static::$globalJavascripts;
-    }
-
-
-    public function addJavascript($javascript, $sufix = null)
-    {
-        $name = $this->getID() . $sufix;
-
-        $this->javascripts[$this->getID()] = $javascript;
-
-        return $this->javascripts;
-    }
-
-    public function getJavascript()
-    {
-        return implode("\n", $this->javascripts);
-    }
-
-
-    //=======================================================
-
-
-    public function addCSS($cssDeclaration, $name = null)
-    {
-        if ($name === null) {
-            $name = get_called_class();
-        }
-
-        $this->css[$name] = $cssDeclaration;
-
-        return $this;
-    }
-
-    public static function addGlobalCSS($cssDeclaration, $suffix = null)
-    {
-        $name = get_called_class() . '-' . $suffix;
-        static::$globalCSS[$name] = $cssDeclaration;
-
-        return static::$globalCSS[$name];
-    }
-
-
-    public function getCSS($toString = true, $withGlobalCSS = false)
-    {
-        if ($toString) {
-            $css = implode('', $this->css);
-            if ($withGlobalCSS) {
-                return implode('', static::$globalCSS) . $css;
-            }
-        } else {
-            return $this->css;
-        }
-    }
-
-
-    public static function getGlobalCSS()
-    {
-        return implode('', static::$globalCSS);
-    }
 
 
 

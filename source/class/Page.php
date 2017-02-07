@@ -25,6 +25,7 @@ class Page extends Component
 
 
         $output = parent::render($output, $values, $renderer);
+
         $this->output = $this->injectCSS($output);
         $this->output = $this->injectJavascript($this->output);
 
@@ -41,7 +42,7 @@ class Page extends Component
         foreach ($this->getComponents() as $component) {
             $cssBuffer .= $component->getGlobalCSS();
         }
-        $output = preg_replace('`</head>`i', '<style>' . $cssBuffer . '</style></head>', $buffer);
+        $output = preg_replace('`</head>`i', '' . $cssBuffer . '</head>', $buffer);
         return $output;
     }
 
@@ -51,13 +52,28 @@ class Page extends Component
 
         $globalJavascriptBuffer = '';
         $javascriptBuffer = '';
+
+
         foreach ($this->getComponents() as $component) {
             $script = $component->getJavascript();
             if ($script) {
                 $javascriptBuffer .= '<script>' . $script . '</script>';
             }
 
+            $globalJavascriptComponents = array_merge($globalJavascriptComponents, $component->getGlobalJavascripts(false));
+            $globalJavascriptBuffer='';
+            foreach ($globalJavascriptComponents as $descriptor) {
+                if($descriptor['isURL']) {
+                    $globalJavascriptBuffer.='<script src="'.$descriptor['declaration'].'"></script>';
+                }
+                else {
+                    $globalJavascriptBuffer.='<script>
+                    '.$descriptor['declaration'].'
+                </script>';
+                }
+            }
 
+            /*
             $componentClassName = get_class($component);
             if (!isset($globalJavascriptComponents[$componentClassName])) {
                 $scripts = $component->getGlobalJavascripts();
@@ -68,6 +84,7 @@ class Page extends Component
                     }
                 }
             }
+            */
         }
 
 
