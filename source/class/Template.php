@@ -3,11 +3,11 @@
 namespace PHPComponent;
 
 
-use PHPComponent\DOMDocument;
 use PHPComponent\Traits\MustacheTemplate;
 use PHPComponent\Traits\Collection;
+use PHPComponent\Interfaces\Renderer;
 
-class Template
+class Template implements Renderer
 {
 
 
@@ -17,6 +17,7 @@ class Template
 
     protected $output;
     protected $template;
+
 
     protected $renderer;
     protected static $staticRenderer;
@@ -118,8 +119,15 @@ class Template
     public function parseDOM($buffer)
     {
 
+
         libxml_use_internal_errors(true);
         $dom = new DOMDocument('1.0', 'utf-8');
+
+        $dom->substituteEntities=false;
+        $dom->preserveWhiteSpace=false;
+        $dom->formatOutput=true;
+        $dom->xmlStandalone=true;
+
         $dom->loadHTML(mb_convert_encoding($buffer, 'HTML-ENTITIES', 'UTF-8'), $this->libXMLFlag);
         libxml_clear_errors();
 
@@ -143,6 +151,16 @@ class Template
             $nodes = $xPath->query($query);
 
             foreach ($nodes as $node) {
+
+                /*
+                echo '<pre id="' . __FILE__ . '-' . __LINE__ . '" style="border: solid 1px rgb(255,0,0); background-color:rgb(255,255,255)">';
+                echo '<div style="background-color:rgba(100,100,100,1); color: rgba(255,255,255,1)">' . __FILE__ . '@' . __LINE__ . '</div>';
+                echo get_class($this).' : ';
+                print_r($tagName);
+                echo '</pre>';
+                */
+
+
                 $nodeContent = $dom->innerXML($node);
 
                 $content = call_user_func_array(array($customTag, 'render'), array($nodeContent, $node));
@@ -151,7 +169,13 @@ class Template
             }
         }
 
-        return $dom->saveHTML();
+        $output=$dom->saveHTML();
+
+
+        //"bug" with saveHTML and "src" attribute
+        //replacing {{{  }}}} by %7B%7B%7B    %7D%7D%7D
+        $output=urldecode($output);
+        return $output;
 
 
     }
@@ -203,9 +227,10 @@ class Template
      * @param null $renderer
      * @return string
      */
-    public function render($template = null, $values = null, $renderer = null)
+    public function render()
     {
-        $this->initializeRendering($template, $values, $renderer);
+
+
 
         $compiledDom = $this->parseDOM($this->template, true);
         $output = $this->compileMustache($compiledDom, $this->getVariables());
@@ -213,7 +238,7 @@ class Template
         return $this->output;
     }
 
-    protected function initializeRendering($template = null, $values = null, $renderer = null)
+    public function initializeRendering($template = null, $values = null, $renderer = null)
     {
         if ($renderer) {
             $this->renderer = $renderer;
@@ -229,18 +254,18 @@ class Template
     }
 
 
-    protected function doAfterRendering($buffer) {
+    public function doAfterRendering($buffer)
+    {
 
-        if(is_callable(static::$staticRenderer)) {
-            $buffer=call_user_func_array(static::$staticRenderer, array($buffer, $this));
+        if (is_callable(static::$staticRenderer)) {
+            $buffer = call_user_func_array(static::$staticRenderer, array($buffer, $this));
         }
 
-        if(is_callable($this->renderer)) {
-            $buffer=call_user_func_array($this->renderer, array($buffer, $this));
+        if (is_callable($this->renderer)) {
+            $buffer = call_user_func_array($this->renderer, array($buffer, $this));
         }
         return $buffer;
     }
-
 
 
     /**

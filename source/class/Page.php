@@ -15,16 +15,14 @@ class Page extends Component
     protected $cssFiles = null;
 
 
-    public function render($template = null, $values = null, $renderer=null)
+    public function render()
     {
 
-        $this->initializeRendering($template, $values, $renderer);
+
 
         $compiledDom = $this->parseDOM($this->template, true);
         $output = $this->compileMustache($compiledDom, $this->getVariables());
 
-
-        $output = parent::render($output, $values, $renderer);
 
         $this->output = $this->injectCSS($output);
         $this->output = $this->injectJavascript($this->output);

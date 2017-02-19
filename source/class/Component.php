@@ -11,23 +11,31 @@ class Component extends Template
 {
 
 
+    use HTMLComponent;
+
     protected $attributeXPathQuery = '/property[@name]';
     protected $attributeAttributeName = 'name';
 
-    use HTMLComponent;
-
-
     protected $sourceNode;
+
+
+    protected $instanceID;
+
+
+    protected static $instanceIndex = array();
 
 
     public function __construct($template = null)
     {
         parent::__construct($template);
         $this->generateID();
-        $this->setVariable('elementID', $this->getID());
+
     }
 
-    public function getElementID() {
+
+
+    public function getElementID()
+    {
         return $this->getVariable('elementID');
     }
 
@@ -37,25 +45,50 @@ class Component extends Template
     }
 
 
+
+
+
     protected function generateID()
     {
+
+
+        if($this->instanceID !== null) {
+            return $this->instanceID;
+        }
+
+
         $className = basename(get_class($this));
+
 
         if (!isset(static::$instanceIndex[$className])) {
             static::$instanceIndex[$className] = -1;
         }
         static::$instanceIndex[$className]++;
+
+
+
+        /*
+        echo '<pre id="' . __FILE__ . '-' . __LINE__ . '" style="border: solid 1px rgb(255,0,0); background-color:rgb(255,255,255)">';
+        echo '<div style="background-color:rgba(100,100,100,1); color: rgba(255,255,255,1)">' . __FILE__ . '@' . __LINE__ . '</div>';
+        print_r($className);
+        echo ' : '.static::$instanceIndex[$className];
+        echo '</pre>';
+        */
+
+
+
+
         $this->instanceID = str_replace('\\', '-', $className) . '-' . static::$instanceIndex[$className];
+
+        //$this->instanceID=$className.'-'.md5(uniqid('', true));
 
         $this->setVariable('elementID', $this->instanceID);
     }
 
 
-
-
     public function loadFromDOMNode(\DOMElement $node)
     {
-        $this->sourceNode=$node;
+        $this->sourceNode = $node;
         $this->dom = $this->createDomDocumentFromNode($node);
         $this->extractParametersFromDOM($this->dom);
         return $this;
@@ -134,23 +167,6 @@ class Component extends Template
         }
 
         return $this;
-    }
-
-    /**
-     * @param null $template
-     * @param null $values
-     * @return string
-     */
-    public function render($template = null, $values = null, $renderer=null)
-    {
-
-        $this->initializeRendering($template, $values, $renderer);
-        $output = $this->compileMustache($this->template, $this->getVariables());
-
-
-        $this->output = $this->doAfterRendering($output);
-
-        return $this->output;
     }
 
 
