@@ -15,7 +15,7 @@
 	"autoload": {
 		"psr-0": { "Mustache": "vendor/mustache/src" },
 		"psr-4": {
-			"Phi\\Component\\": "source"
+			"Phi\\Component\\": "source/class"
 		},
 		"files": [
 
