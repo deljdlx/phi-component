@@ -1,11 +1,11 @@
 <?php
 
-namespace PHPComponent;
+namespace Phi\Component;
 
 
-use PHPComponent\Traits\MustacheTemplate;
-use PHPComponent\Traits\Collection;
-use PHPComponent\Interfaces\Renderer;
+use Phi\Component\Traits\MustacheTemplate;
+use Phi\Component\Traits\Collection;
+use Phi\Component\Interfaces\Renderer;
 
 class Template implements Renderer
 {

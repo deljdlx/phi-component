@@ -1,11 +1,11 @@
 <?php
 
-namespace PHPComponent;
+namespace Phi\Component;
 
 
-use PHPComponent\DOMDocument;
-use PHPComponent\Traits\MustacheTemplate;
-use PHPComponent\Traits\Collection;
+use Phi\Component\DOMDocument;
+use Phi\Component\Traits\MustacheTemplate;
+use Phi\Component\Traits\Collection;
 
 class Page extends Component
 {

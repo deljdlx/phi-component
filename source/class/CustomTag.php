@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPComponent;
+namespace Phi\Component;
 
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPComponent\Traits;
+namespace Phi\Component\Traits;
 
 
 Trait MustacheTemplate

@@ -1,11 +1,11 @@
 <?php
 
-namespace PHPComponent;
+namespace Phi\Component;
 
 
-use PHPComponent\Traits\HTMLComponent;
-use PHPComponent\Traits\MustacheTemplate;
-use PHPComponent\Traits\Collection;
+use Phi\Component\Traits\HTMLComponent;
+use Phi\Component\Traits\MustacheTemplate;
+use Phi\Component\Traits\Collection;
 
 class Component extends Template
 {
@@ -33,7 +33,6 @@ class Component extends Template
     }
 
 
-
     public function getElementID()
     {
         return $this->getVariable('elementID');
@@ -45,14 +44,11 @@ class Component extends Template
     }
 
 
-
-
-
     protected function generateID()
     {
 
 
-        if($this->instanceID !== null) {
+        if ($this->instanceID !== null) {
             return $this->instanceID;
         }
 
@@ -66,7 +62,6 @@ class Component extends Template
         static::$instanceIndex[$className]++;
 
 
-
         /*
         echo '<pre id="' . __FILE__ . '-' . __LINE__ . '" style="border: solid 1px rgb(255,0,0); background-color:rgb(255,255,255)">';
         echo '<div style="background-color:rgba(100,100,100,1); color: rgba(255,255,255,1)">' . __FILE__ . '@' . __LINE__ . '</div>';
@@ -74,8 +69,6 @@ class Component extends Template
         echo ' : '.static::$instanceIndex[$className];
         echo '</pre>';
         */
-
-
 
 
         $this->instanceID = str_replace('\\', '-', $className) . '-' . static::$instanceIndex[$className];

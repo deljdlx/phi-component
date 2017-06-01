@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPComponent\Interfaces;
+namespace Phi\Component\Interfaces;
 
 Interface  Renderer
 {

@@ -15,7 +15,7 @@ require(__DIR__.'/../bootstrap.php');
 
 
 $template='<button>Composant bouton</button>';
-$test=new \PHPComponent\Component($template);
+$test=new \Phi\Component\Component($template);
 echo $test->render();
 echo '<hr/>';
 
@@ -23,7 +23,7 @@ echo '<hr/>';
 $template='
     <button>{{{content}}}</button>
 ';
-$test=new \PHPComponent\Component($template);
+$test=new \Phi\Component\Component($template);
 $test->setVariable('content', 'Contenu injecté');
 echo $test->render();
 echo '<hr/>';
@@ -36,7 +36,7 @@ echo '<hr/>';
 $template='
     <button style="{{{style}}}">test attribut style</button>
 ';
-$test=new \PHPComponent\Component($template);
+$test=new \Phi\Component\Component($template);
 $test->setVariable('style', 'background-color: #CFC');
 echo $test->render();
 echo '<hr/>';
@@ -49,12 +49,12 @@ echo '<hr/>';
 $template='
     <button>Sous composant</button>
 ';
-$subComponent=new \PHPComponent\Component($template);
+$subComponent=new \Phi\Component\Component($template);
 
 $template='
     <div style="border: solid 3px #002a80; padding: 10px;">Composant container <div>{{{content}}}</div></div>
 ';
-$component=new \PHPComponent\Component($template);
+$component=new \Phi\Component\Component($template);
 $component->setVariable('content', $subComponent);
 echo $component->render();
 echo '<hr/>';
@@ -77,7 +77,7 @@ $template='
     </div>
 ';
 
-$test=new \PHPComponent\Component($template);
+$test=new \Phi\Component\Component($template);
 $test->setVariable('content', '::Variable mustache "content"::');
 $test->registerCustomTag('phi-component', function() {
     return '{{{Contenu texte}}}';
@@ -102,7 +102,7 @@ $template='
     </div>
 ';
 
-$test=new \PHPComponent\Template($template);
+$test=new \Phi\Component\Template($template);
 $test->registerCustomTag('phi-component', function() {
    return '<button>Custom tag phi-component</button>';
 });
@@ -115,7 +115,7 @@ echo '<hr/>';
 //=======================================================
 
 
-class TestComponent extends \PHPComponent\Component
+class TestComponent extends \Phi\Component\Component
 {
     public function render($template=null, $values=null) {
         return $this->getVariable('content');
@@ -147,7 +147,7 @@ $template='
     </div>
 ';
 
-$test=new \PHPComponent\Template($template);
+$test=new \Phi\Component\Template($template);
 $test->setVariable('content', 'Contenu injecté');
 $test->enableComponents(true);
 
@@ -159,7 +159,7 @@ echo '<hr/>';
 
 
 
-class TestComponent2 extends \PHPComponent\Component
+class TestComponent2 extends \Phi\Component\Component
 {
 	public function render($template=null, $values=null) {
 		return '<button>'.$this->getVariable('content').'</button>';
@@ -182,7 +182,7 @@ $template='
     </div>
 ';
 
-$test=new \PHPComponent\Template($template);
+$test=new \Phi\Component\Template($template);
 $test->setVariable('content', 'Contenu injecté dans le composant');
 $test->enableComponents(true);
 
@@ -195,7 +195,7 @@ echo '<hr/>';
 
 
 
-class TestComponent3 extends \PHPComponent\Component
+class TestComponent3 extends \Phi\Component\Component
 {
 	public function render($template=null, $values=null) {
 		return '<button>'.$this->getVariable('content').'</button>';
@@ -218,7 +218,7 @@ $template='
     </div>
 ';
 
-$test=new \PHPComponent\Template($template);
+$test=new \Phi\Component\Template($template);
 $test->setVariable('content', array(
 	'test1'=>array(
 		'sub1'=>'hello',
@@ -235,7 +235,7 @@ echo '<hr/>';
 
 
 
-class TestComponent4 extends \PHPComponent\Component
+class TestComponent4 extends \Phi\Component\Component
 {
 	public function render($template=null, $values=null) {
 		return '<button>'.
@@ -261,7 +261,7 @@ $template='
     </div>
 ';
 
-$test=new \PHPComponent\Template($template);
+$test=new \Phi\Component\Template($template);
 $test->setVariable('content', array(
 	'test1'=>array(
 		'sub1'=>'hello',
@@ -296,7 +296,7 @@ $template='
     </div>
 ';
 
-$test=new \PHPComponent\Component($template);
+$test=new \Phi\Component\Component($template);
 $yoloTag=$test->registerCustomTag('yolo', function($nodeContent, $node) {
     return $nodeContent;
 });
