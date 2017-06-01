@@ -1,6 +1,6 @@
 {
-	"name": "elbiniou-phpcomponent",
-	"description": "PHP web-components",
+	"name": "phi-component",
+	"description": "Phi web-components",
 	"repositories": [
 	],
 	"require":
