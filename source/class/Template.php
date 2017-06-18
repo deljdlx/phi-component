@@ -229,9 +229,6 @@ class Template implements Renderer
      */
     public function render()
     {
-
-
-
         $compiledDom = $this->parseDOM($this->template, true);
         $output = $this->compileMustache($compiledDom, $this->getVariables());
         $this->output = $this->doAfterRendering($output);
@@ -283,13 +280,14 @@ class Template implements Renderer
     }
 
 
-    public function includeTemplate($file)
+    public function includeTemplate($templateFile, $values=array())
     {
-        if (!is_file($file)) {
-            throw new \LogicException('Template "' . $file . '" does not exist');
+        if (!is_file($templateFile)) {
+            throw new \LogicException('Template "' . $templateFile . '" does not exist');
         }
+        extract($values);
         ob_start();
-        include($file);
+        include($templateFile);
         return ob_get_clean();
     }
 
