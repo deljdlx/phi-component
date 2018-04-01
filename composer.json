@@ -2,10 +2,11 @@
 	"name": "phi-component",
 	"description": "Phi web-components",
 	"repositories": [
+		{"type": "vcs", "url": "https://github.com/ElBiniou/phi-dom"}
 	],
 	"require":
 	{
-
+		"phi-dom": "dev-master"
 	},
 	"require-dev": {
 	},
