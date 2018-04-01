@@ -6,6 +6,7 @@ namespace Phi\Component;
 use Phi\Component\Traits\MustacheTemplate;
 use Phi\Component\Traits\Collection;
 use Phi\Component\Interfaces\Renderer;
+use Phi\DOM\Document;
 
 class Template implements Renderer
 {
@@ -107,7 +108,7 @@ class Template implements Renderer
 
         $valueNode = $node->cloneNode(true);
 
-        $valueDocument = new DOMDocument('1.0', 'utf-8');
+        $valueDocument = new Document('1.0', 'utf-8');
         $importedValueNode = $valueDocument->importNode($valueNode, true);
         $valueDocument->appendChild($importedValueNode);
 
@@ -121,7 +122,7 @@ class Template implements Renderer
 
 
         libxml_use_internal_errors(true);
-        $dom = new DOMDocument('1.0', 'utf-8');
+        $dom = new Document('1.0', 'utf-8');
 
         $dom->substituteEntities=false;
         $dom->preserveWhiteSpace=false;
